@@ -19,13 +19,13 @@ Param
   [Parameter(Mandatory = $true,
     ParameterSetName = "read" )]
   $PAT, # Personal Access Token
-   
+
   [Parameter(Mandatory = $true,
     ParameterSetName = "write" )]
   [Parameter(Mandatory = $true,
     ParameterSetName = "read" )]
   $AzureDevOpsProjectURL, # https://vsrm.dev.azure.com/{organization}/{project}
-    
+  
   [Parameter(Mandatory = $true,
     ParameterSetName = "write" )]
   $oldServiceConnection,
