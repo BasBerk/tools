@@ -78,11 +78,8 @@ function updateTasks {
   )
   [uri] $script:GetDefinitionURI = "$AzureDevOpsProjectURL/_apis/release/definitions/$DefinitionID"
   $GetDefinitionResponse = Invoke-RestMethod -Uri $GetDefinitionURI -Method GET -Headers @{Authorization = ("Basic {0}" -f $Base64AuthInfo) }
-
-
   $allTasks = $GetDefinitionResponse.environments.deployPhases.workflowTasks | where { ($_.inputs.ConnectedServiceNameARM -eq $oldServiceConnection) -or ($_.inputs.ConnectedServiceName -eq $oldServiceConnection) }
     
-  
   # Loop through each relevant task 
   ForEach ($Task in $allTasks ) {
     write-host -ForegroundColor green "start with $task."
@@ -105,8 +102,6 @@ function updateTasks {
   # version is the latest stable version at this moment.
   $script:UpdateDefinitionURI = "$AzureDevOpsProjectURL/_apis/release/definitions?api-version=7.1-preview"
   Invoke-RestMethod -Uri $UpdateDefinitionURI -Method Put -ContentType application/json -Headers @{Authorization = ("Basic {0}" -f $Base64AuthInfo) } -Body $Definition
-  clear-variable definition
-    
 }
 
 function UpdateSelectedPipelines {
@@ -116,7 +111,6 @@ function UpdateSelectedPipelines {
   ForEach ($DefinitionID in $PipelineIDs) {
     updateTasks -DefinitionID $DefinitionID
   }
-    
 }
 
 UpdateSelectedPipelines -PipelineIDs 17
@@ -124,7 +118,6 @@ function UpdateAllPipelines {
   ForEach ($DefinitionID in $DefinitionIDs) {
     updateTasks -DefinitionID $DefinitionID
   }
-
 }
 
 if ($ListPipelineIDs -eq 1 ) {
@@ -143,7 +136,6 @@ if ($UpdateAllPipelines -eq 1) {
 }
 
 if ($PipelineIDs -ne $null) {
-    
   Write-Host -ForegroundColor green "Updating the selected Pipelines Ids"
   UpdateSelectedPipelines -PipelineIDs $PipelineIDs
   Write-Host -ForegroundColor green "Finished with the selected Pipelines Ids"
